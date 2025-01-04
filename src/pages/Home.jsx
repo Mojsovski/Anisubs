@@ -1,13 +1,23 @@
-import React from "react";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import image from "../assets/images/images";
 import icon from "../assets/icons/icons";
+import Card from "../components/Card";
+
+import useStore from "../data/useStore";
 
 function Home() {
+  const { fetchHome, recentAnime, batchAnime, movieAnime } = useStore();
+
+  useEffect(() => {
+    fetchHome();
+  }, []);
+
   return (
     <>
       <Navbar />
-      <div className="h-screen relative ">
+      <div className="h-screen relative bg-[#1E1E1E] ">
         <div className=" flex flex-col bg-[#1E1E1E] ">
           {/* carousel */}
           <div className="h-[550px] relative ">
@@ -30,25 +40,56 @@ function Home() {
               <div className="w-full  bg-white"></div>
             </div>
           </div>
-          {/* card anime */}
-          <div className="m-12 bg-[#363636] ">
-            <div className="m-5 grid grid-cols-3 justify-between gap-7">
-              <div className=" h-[200px] bg-slate-600">
-                <img
-                  className="h-full w-full object-cover z-0 shadow-inner  "
-                  src={image.carousel}
-                />
+          <div className="my-3 md:my-7 lg:my-12 flex flex-col gap-4">
+            {" "}
+            {/* ongoing anime */}
+            <div className="mx-3 md:mx-7 lg:mx-12 p-5 bg-[#363636] flex-col flex gap-5 rounded ">
+              <h2 className="text-3xl text-white"># Anime Terbaru</h2>
+              {/* card */}
+              <div className="flex flex-wrap justify-center gap-7 ">
+                {recentAnime.map((item, index) => (
+                  <Link to={"/"}>
+                    <Card
+                      key={index}
+                      image={item.poster}
+                      title={item.title}
+                      episode={item.episodes}
+                      released={item.releasedOn}
+                    />
+                  </Link>
+                ))}
               </div>
-              <div className=" h-[200px] bg-slate-600"></div>
-              <div className=" h-[200px] bg-slate-600"></div>
-              <div className=" h-[200px] bg-slate-600"></div>
-              <div className=" h-[200px] bg-slate-600"></div>
-              <div className=" h-[200px] bg-slate-600"></div>
-              <div className=" h-[200px] bg-slate-600"></div>
-              <div className=" h-[200px] bg-slate-600"></div>
-              <div className=" h-[200px] bg-slate-600"></div>
-              <div className=" h-[200px] bg-slate-600"></div>
-              <div className=" h-[200px] bg-slate-600"></div>
+            </div>
+            {/* batch anime */}
+            <div className="mx-3 md:mx-7 lg:mx-12 p-5 bg-[#363636] flex-col flex gap-5 rounded ">
+              <h2 className="text-3xl text-white"># Batch Anime</h2>
+              {/* card */}
+              <div className="flex flex-wrap justify-center gap-7 ">
+                {batchAnime.map((item, index) => (
+                  <Card
+                    key={index}
+                    image={item.poster}
+                    title={item.title}
+                    episode={item.episodes}
+                    released={item.releasedOn}
+                  />
+                ))}
+              </div>
+            </div>
+            {/* movie anime */}
+            <div className="mx-3 md:mx-7 lg:mx-12 p-5 bg-[#363636] flex-col flex gap-5 rounded ">
+              <h2 className="text-3xl text-white"># Movie Anime</h2>
+              {/* card */}
+              <div className="flex flex-wrap justify-center gap-7 ">
+                {movieAnime.map((item, index) => (
+                  <Card
+                    key={index}
+                    image={item.poster}
+                    title={item.title}
+                    released={item.releaseDate}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
